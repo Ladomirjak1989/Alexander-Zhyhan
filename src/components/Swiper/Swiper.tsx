@@ -22,9 +22,9 @@ interface ISliderConfig {
 interface SliderProps {
     id: string;
 }
-interface Ipagination {
-    [key: string]: boolean
-}
+// interface Ipagination {
+//     [key: string]: boolean
+// }
 
 
 interface ISwiperConfig {
@@ -118,59 +118,8 @@ const swiperConfig: ISwiperConfig = {
 
 export default function Slider({ id }: SliderProps) {
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
-    const { slides, thumbs, ...restConfig } = swiperConfig[id]
+    const { slides, thumbs } = swiperConfig[id]
 
-
-    // return (
-
-    //     <div className='h-[10px]'>
-    //         <div className="max-w-2xl float-end">
-    //             <Swiper
-    //                 {...restConfig}
-    //                 {...(thumbs ? { thumbs: { swiper: thumbsSwiper } } : {})}
-    //                 className="relative pb-10"
-    //             >
-    //                 {slides.map(({ id, imgUrl, title, text }: ISliderConfig, index: number) => (
-    //                     <SwiperSlide
-    //                         key={id}
-    //                         className="flex flex-col items-center bg-white shadow-md rounded-lg overflow-hidden"
-    //                     >
-    //                         <div className="relative w-full h-[420px]"> {/* Збільшена висота */}
-    //                             <img src={imgUrl} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
-    //                         </div>
-    //                         <div className="p-4 text-center">
-    //                             {title && <h4 className="text-lg font-semibold text-green-900">{title}</h4>}
-    //                             {text && <p className="mt-2 text-gray-600">{text}</p>}
-    //                         </div>
-    //                     </SwiperSlide>
-    //                 ))}
-    //             </Swiper>
-    //         </div>
-
-
-    //         {
-    //             id === "thumbs" &&
-    //             <Swiper
-    //                 onSwiper={(swiper: SwiperType) => setThumbsSwiper(swiper)}
-    //                 loop={true}
-    //                 spaceBetween={10}
-    //                 slidesPerView={4}
-    //                 freeMode={true}
-    //                 watchSlidesProgress={true}
-    //                 modules={[FreeMode, Navigation, Thumbs]}
-    //                 className="mySwiper2"
-    //             >
-
-    //                 {slides.map(({ id, imgUrl }: ISliderConfig, index: number) => (
-    //                     <SwiperSlide key={id + index}>
-    //                         <img src={imgUrl} alt={`Slide ${index + 1}`} />
-    //                     </SwiperSlide>
-    //                 ))}
-
-    //             </Swiper>
-    //         }
-    // </div>
-    // );
 
 
     return (

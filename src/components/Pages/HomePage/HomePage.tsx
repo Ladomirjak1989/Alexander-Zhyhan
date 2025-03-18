@@ -55,13 +55,13 @@ const HomePage = () => {
         setOpenIndex(openIndex === index ? null : index);
     };
 
-    // 🔹 Функція для плавного скролу
-    const handleScroll = (targetId: string) => {
-        const targetElement = document.getElementById(targetId);
-        if (targetElement) {
-            targetElement.scrollIntoView({ behavior: "smooth" });
-        }
-    };
+    // // 🔹 Функція для плавного скролу
+    // const handleScroll = (targetId: string) => {
+    //     const targetElement = document.getElementById(targetId);
+    //     if (targetElement) {
+    //         targetElement.scrollIntoView({ behavior: "smooth" });
+    //     }
+    // };
 
 
     return (
