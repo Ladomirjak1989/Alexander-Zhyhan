@@ -142,8 +142,6 @@ export default function Slider({ id }: SliderProps) {
                                 {title && <h4 className="text-lg font-semibold text-green-900">{title}</h4>}
                                 {text && <p className="mt-2 text-gray-600">{text}</p>}
                             </div>
-                            {/* <div className="swiper-button-prev !text-green-900"></div>
-                            <div className="swiper-button-next !text-green-900"></div> */}
                         </SwiperSlide>
                     ))}
                 </Swiper>

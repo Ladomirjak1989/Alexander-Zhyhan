@@ -20,7 +20,6 @@ const Footer: React.FC = () => {
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
-        console.log(e, 111)
         e.preventDefault();
 
         const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
@@ -53,12 +52,14 @@ const Footer: React.FC = () => {
                 {
                     name: formData.name,
                     email: formData.email,
+                    reply_to: process.env.EMAIL_USER,
                 },
                 userId
             );
 
             if (response.status === 200) {
-                setSuccessMessage("✅ Your message has been sent successfully!");
+                // setSuccessMessage("✅ Your message has been sent successfully!");
+                setSuccessMessage("✅ Je bericht is succesvol verzonden!");
                 setFormData({ name: "", lastName: "", email: "", message: "" });
 
                 setTimeout(() => {
@@ -69,7 +70,8 @@ const Footer: React.FC = () => {
             }
         } catch (error) {
             console.error("Email sending error:", error);
-            setSuccessMessage("❌ Error sending message. Please try again.");
+            // setSuccessMessage("❌ Error sending message. Please try again.");
+            setSuccessMessage("❌ Fout bij het verzenden van het bericht. Probeer het opnieuw.");
         }
     };
 
@@ -118,7 +120,7 @@ const Footer: React.FC = () => {
                             required
                             value={formData.message} onChange={handleChange}
                         ></textarea>
-                        
+
                         <button
                             type="submit"
                             className="w-full bg-green-900 text-white py-3 rounded-lg text-lg hover:bg-green-800 transition"
@@ -140,10 +142,22 @@ const Footer: React.FC = () => {
                     <div>
                         <h3 className="text-lg font-semibold text-green-900">Bedrijf</h3>
                         <ul className="text-gray-700 space-y-2">
-                            <li><a href="#" className="hover:underline">Home</a></li>
-                            <li><a href="#" className="hover:underline">Projecten</a></li>
+                            <li>
+                                <a href="#" className="flex font-semibold items-center gap-2 group hover:underline hover:text-green-700 transition">
+                                    Home
+                                    <span className="text-lg transition-transform duration-300 animate-bounce">↑</span>
+                                </a>
+                            </li>
+
+                            {/* <li>
+                                <a href="#" className="flex items-center gap-2 group hover:underline hover:text-green-700 transition">
+                                    Projecten
+                                    <span className="text-lg transition-transform duration-300 group-hover:-translate-y-1">↑</span>
+                                </a>
+                            </li> */}
                         </ul>
                     </div>
+
                     <div>
                         <h3 className="text-lg font-semibold text-green-900">Contact</h3>
                         <ul className="text-gray-700 space-y-2">
