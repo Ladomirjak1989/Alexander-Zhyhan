@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from "react";
 import { FaPhone, FaEnvelope, FaInstagram } from "react-icons/fa";
+import emailjs from "@emailjs/browser";
 
 const Footer: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -10,57 +11,132 @@ const Footer: React.FC = () => {
         message: "",
     });
 
-    const [status, setStatus] = useState<string | null>(null);
 
+    const [successMessage, setSuccessMessage] = useState("");
+
+    // Обробка змін в полях форми
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
+        console.log(e, 111)
         e.preventDefault();
 
-        try {
-            const response = await fetch("/api/sendEmail", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
-            });
+        const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
+        const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
+        const templateReplyId = process.env.NEXT_PUBLIC_EMAILJS_AUTO_REPLY_TEMPLATE_ID;
+        const userId = process.env.NEXT_PUBLIC_EMAILJS_KEY;
 
-            if (response.ok) {
-                setStatus("Uw bericht is succesvol verzonden!");
+        if (!serviceId || !templateId || !userId || !templateReplyId) {
+            setSuccessMessage("❌ Configuration error. Please contact support.");
+            return;
+        }
+
+        try {
+            const response = await emailjs.send(
+                serviceId,
+                templateId,
+                {
+                    name: formData.name,  // Передаємо ім'я
+                    last_name: formData.lastName, // Додаємо прізвище, якщо потрібно
+                    email: formData.email, // Передаємо email користувача
+                    message: formData.message, // Передаємо повідомлення
+                },
+                userId
+            );
+
+            // Авто-відповідь користувачу
+            await emailjs.send(
+                serviceId,
+                templateReplyId!,  // ❗️ Це окремий шаблон
+                {
+                    name: formData.name,
+                    email: formData.email,
+                },
+                userId
+            );
+
+            if (response.status === 200) {
+                setSuccessMessage("✅ Your message has been sent successfully!");
                 setFormData({ name: "", lastName: "", email: "", message: "" });
+
+                setTimeout(() => {
+                    setSuccessMessage("");
+                }, 5000);
             } else {
-                setStatus("Er is een fout opgetreden. Probeer het opnieuw.");
+                throw new Error("Failed to send message.");
             }
         } catch (error) {
-            setStatus("Er is een probleem opgetreden bij het verzenden.");
+            console.error("Email sending error:", error);
+            setSuccessMessage("❌ Error sending message. Please try again.");
         }
     };
 
+
     return (
-        <footer id="contact" className="bg-emerald-50 py-7"> {/* ✅ Додаємо id для скролу */}
-            <div className="mx-auto px-6 pt-4 lg:px-16 grid grid-cols-1 lg:grid-cols-2 gap-56">
+        <footer id="contact" className="bg-emerald-50 py-10">
+            <div className="mx-auto px-6 lg:px-16 grid grid-cols-1 md:grid-cols-2 gap-12">
                 {/* Ліва частина - Форма */}
                 <div>
                     <div className="flex items-center space-x-4">
                         <hr className="w-16 border-t-2 border-green-900" />
                         <span className="text-md font-light text-green-900">NEEM</span>
-                        <h2 className="text-4xl font-bold text-green-900">CONTACT OP</h2>
+                        <h2 className="text-3xl md:text-4xl font-bold text-green-900">CONTACT OP</h2>
                     </div>
 
                     <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-                        <input type="text" name="name" placeholder="Uw Naam" value={formData.name} onChange={handleChange} className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-900" required />
-                        <input type="text" name="lastName" placeholder="Uw Achternaam" value={formData.lastName} onChange={handleChange} className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-900" required />
-                        <input type="email" name="email" placeholder="Uw E-mailadres" value={formData.email} onChange={handleChange} className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-900" required />
-                        <textarea name="message" placeholder="Bericht" value={formData.message} onChange={handleChange} rows={4} className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-900" required></textarea>
-                        <button type="submit" className="w-full bg-green-900 text-white py-3 rounded-lg text-lg hover:bg-green-800 transition">VERZENDEN</button>
+                        <input
+                            type="text"
+                            name="name"
+                            placeholder="Uw Naam"
+                            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-900"
+                            required
+                            value={formData.name} onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="lastName"
+                            placeholder="Uw Achternaam"
+                            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-900"
+                            required
+                            value={formData.lastName} onChange={handleChange}
+                        />
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Uw E-mailadres"
+                            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-900"
+                            required
+                            value={formData.email} onChange={handleChange}
+                        />
+                        <textarea
+                            name="message"
+                            placeholder="Bericht"
+                            rows={4}
+                            className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-900"
+                            required
+                            value={formData.message} onChange={handleChange}
+                        ></textarea>
+                        
+                        <button
+                            type="submit"
+                            className="w-full bg-green-900 text-white py-3 rounded-lg text-lg hover:bg-green-800 transition"
+                        >
+                            VERZENDEN
+                        </button>
+                        {/* ✅ Повідомлення про статус надсилання */}
+                        {successMessage && (
+                            <div className={`mt-4 text-center text-lg font-semibold ${successMessage.includes("✅") ? "text-green-600" : "text-red-600"
+                                }`}>
+                                {successMessage}
+                            </div>
+                        )}
                     </form>
-
-                    {status && <p className="mt-4 text-center text-green-900">{status}</p>}
                 </div>
 
                 {/* Права частина - Контактна інформація */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     <div>
                         <h3 className="text-lg font-semibold text-green-900">Bedrijf</h3>
                         <ul className="text-gray-700 space-y-2">
@@ -71,22 +147,44 @@ const Footer: React.FC = () => {
                     <div>
                         <h3 className="text-lg font-semibold text-green-900">Contact</h3>
                         <ul className="text-gray-700 space-y-2">
-                            <li className="flex items-center space-x-2"><FaPhone className="text-green-900" /><span>+31 (06) 57-63-48-94</span></li>
-                            <li className="flex items-center space-x-2"><FaEnvelope className="text-green-900" /><a href="mailto:info@alexanderzhuhan.nl" className="hover:underline">alex.zhyhan@hotmail.com</a></li>
-                            <li className="flex items-center space-x-2"><FaInstagram className="text-green-900" /><a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:underline">alexanderzhuhan.nl</a></li>
+                            <li className="flex items-center space-x-2">
+                                <FaPhone className="text-green-900" />
+                                <span>+31 (06) 57-63-48-94</span>
+                            </li>
+                            <li className="flex items-center space-x-2">
+                                <FaEnvelope className="text-green-900" />
+                                <a href="mailto:info@alexanderzhuhan.nl" className="hover:underline">
+                                    alex.zhyhan@hotmail.com
+                                </a>
+                            </li>
+                            <li className="flex items-center space-x-2">
+                                <FaInstagram className="text-green-900" />
+                                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                    alexanderzhuhan.nl
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
 
             {/* Нижній блок */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-600 text-sm mt-12 px-6 md:px-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-600 text-sm mt-12 px-6 lg:px-16">
                 <div className="text-center md:text-left">
-                    <p>&copy; COPYRIGHT 2025 | KVK 96675993  Website by <a href="https://" className="text-green-900 hover:underline">BL ICT Bedrijf</a></p>
+                    <p>
+                        &copy; COPYRIGHT 2025 | KVK 96675993 Website by{" "}
+                        <a href="https://" className="text-green-900 hover:underline">
+                            BL ICT Bedrijf
+                        </a>
+                    </p>
                 </div>
-                <div className="text-center md:text-right -mt-32">
-                    <p className="font-semibold text-green-950 italic text-5xl">Aleksander Klusbedrijf</p>
-                    <p className="font-semibold text-gray-700 italic text-3xl">Interieurrenovaties</p>
+                <div className="text-center md:text-right">
+                    <p className="font-semibold text-green-950 italic text-3xl md:text-5xl">
+                        Aleksander Klusbedrijf
+                    </p>
+                    <p className="font-semibold text-gray-700 italic text-xl md:text-3xl">
+                        Interieurrenovaties
+                    </p>
                 </div>
             </div>
         </footer>

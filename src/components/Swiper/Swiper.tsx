@@ -31,7 +31,7 @@ interface ISwiperConfig {
     [key: string]: {
         slides: ISliderConfig[];
         navigation?: boolean;
-        pagination?: boolean | Ipagination;
+        // pagination?: boolean | Ipagination;
         modules?: Array<typeof EffectFlip | typeof Pagination | typeof Navigation | typeof FreeMode | typeof Thumbs>;
         className: string;
         effect?: string;
@@ -48,7 +48,7 @@ const swiperConfig: ISwiperConfig = {
     flip: {
         effect: 'flip',
         grabCursor: true,
-        pagination: { clickable: true },
+        // pagination: { clickable: true },
         navigation: true,
         modules: [EffectFlip, Pagination, Navigation],
         className: "mySwiper",
@@ -116,60 +116,115 @@ const swiperConfig: ISwiperConfig = {
 
 };
 
-
-
 export default function Slider({ id }: SliderProps) {
     const [thumbsSwiper, setThumbsSwiper] = useState<SwiperType | null>(null);
     const { slides, thumbs, ...restConfig } = swiperConfig[id]
-    return (
 
-        <div className='h-[10px]'>
-            <div className="max-w-2xl float-end">
+
+    // return (
+
+    //     <div className='h-[10px]'>
+    //         <div className="max-w-2xl float-end">
+    //             <Swiper
+    //                 {...restConfig}
+    //                 {...(thumbs ? { thumbs: { swiper: thumbsSwiper } } : {})}
+    //                 className="relative pb-10"
+    //             >
+    //                 {slides.map(({ id, imgUrl, title, text }: ISliderConfig, index: number) => (
+    //                     <SwiperSlide
+    //                         key={id}
+    //                         className="flex flex-col items-center bg-white shadow-md rounded-lg overflow-hidden"
+    //                     >
+    //                         <div className="relative w-full h-[420px]"> {/* Збільшена висота */}
+    //                             <img src={imgUrl} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
+    //                         </div>
+    //                         <div className="p-4 text-center">
+    //                             {title && <h4 className="text-lg font-semibold text-green-900">{title}</h4>}
+    //                             {text && <p className="mt-2 text-gray-600">{text}</p>}
+    //                         </div>
+    //                     </SwiperSlide>
+    //                 ))}
+    //             </Swiper>
+    //         </div>
+
+
+    //         {
+    //             id === "thumbs" &&
+    //             <Swiper
+    //                 onSwiper={(swiper: SwiperType) => setThumbsSwiper(swiper)}
+    //                 loop={true}
+    //                 spaceBetween={10}
+    //                 slidesPerView={4}
+    //                 freeMode={true}
+    //                 watchSlidesProgress={true}
+    //                 modules={[FreeMode, Navigation, Thumbs]}
+    //                 className="mySwiper2"
+    //             >
+
+    //                 {slides.map(({ id, imgUrl }: ISliderConfig, index: number) => (
+    //                     <SwiperSlide key={id + index}>
+    //                         <img src={imgUrl} alt={`Slide ${index + 1}`} />
+    //                     </SwiperSlide>
+    //                 ))}
+
+    //             </Swiper>
+    //         }
+    // </div>
+    // );
+
+
+    return (
+        <div className="w-full max-w-3xl mx-auto px-4">
+            {/* Основний слайдер */}
+            <div className="w-full">
                 <Swiper
-                    {...restConfig}
-                    {...(thumbs ? { thumbs: { swiper: thumbsSwiper } } : {})}
+                    loop={true}
+                    navigation={true}
+                    thumbs={thumbs ? { swiper: thumbsSwiper } : undefined}
+                    modules={[Navigation, Thumbs]}
                     className="relative pb-10"
                 >
-                    {slides.map(({ id, imgUrl, title, text }: ISliderConfig, index: number) => (
-                        <SwiperSlide
-                            key={id}
-                            className="flex flex-col items-center bg-white shadow-md rounded-lg overflow-hidden"
-                        >
-                            <div className="relative w-full h-[420px]"> {/* Збільшена висота */}
-                                <img src={imgUrl} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
+                    {slides.map(({ id, imgUrl, title, text }, index) => (
+                        <SwiperSlide key={id} className="flex flex-col items-center bg-white shadow-lg rounded-lg overflow-hidden">
+                            <div className="relative w-full h-64 sm:h-80 md:h-96">
+                                <img src={imgUrl} alt={`Slide ${index + 1}`} className="w-full h-full object-cover rounded-lg" />
                             </div>
                             <div className="p-4 text-center">
                                 {title && <h4 className="text-lg font-semibold text-green-900">{title}</h4>}
                                 {text && <p className="mt-2 text-gray-600">{text}</p>}
                             </div>
+                            {/* <div className="swiper-button-prev !text-green-900"></div>
+                            <div className="swiper-button-next !text-green-900"></div> */}
                         </SwiperSlide>
                     ))}
                 </Swiper>
             </div>
 
-
-            {
-                id === "thumbs" &&
+            {/* Мініатюри (thumbs) */}
+            {id === "thumbs" && (
                 <Swiper
-                    onSwiper={(swiper: SwiperType) => setThumbsSwiper(swiper)}
+                    onSwiper={setThumbsSwiper}
                     loop={true}
                     spaceBetween={10}
-                    slidesPerView={4}
+                    slidesPerView={2}
+                    breakpoints={{
+                        640: { slidesPerView: 3 },
+                        768: { slidesPerView: 4 },
+                        1024: { slidesPerView: 5 },
+                    }}
                     freeMode={true}
                     watchSlidesProgress={true}
                     modules={[FreeMode, Navigation, Thumbs]}
-                    className="mySwiper2"
+                    className="mySwiper2 mt-4"
                 >
-
-                    {slides.map(({ id, imgUrl }: ISliderConfig, index: number) => (
-                        <SwiperSlide key={id + index}>
-                            <img src={imgUrl} alt={`Slide ${index + 1}`} />
+                    {slides.map(({ id, imgUrl }, index) => (
+                        <SwiperSlide key={id + index} className="cursor-pointer">
+                            <img src={imgUrl} alt={`Slide ${index + 1}`} className="w-full h-20 object-cover rounded-lg" />
                         </SwiperSlide>
                     ))}
-
                 </Swiper>
-            }
-    </div>
+            )}
+        </div>
     );
 }
 
