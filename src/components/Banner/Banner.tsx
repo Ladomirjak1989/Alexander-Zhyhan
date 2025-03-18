@@ -33,7 +33,7 @@ const Banner = () => {
                     <p>
                         Daarom bieden wij een end-to-end renovatie-ervaring, waarbij we elke stap van het proces beheren, van ontwerp tot constructie en projectmanagement. Wij nemen alle zorgen uit handen, zodat u zich kunt concentreren op het eindresultaat.
                     </p>
-                    <p className="mt-2 font-bold">Bel +31 (0) 57-63-48-94</p>
+                    <p className="mt-2 font-bold">Bel +31 (06) 57-63-48-94</p>
                     <hr className="mt-2 w-64 border-green-700" />
                 </div>
             </div>
