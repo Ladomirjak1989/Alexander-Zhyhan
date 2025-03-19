@@ -15,7 +15,7 @@ const Banner = () => {
                     END TO END RENOVATIEBEHEER
                 </h1>
                 <p className="mt-4 text-lg sm:text-xl font-light">
-                    Bij Alexander Zhyhan begrijpen we dat een renovatieproject een omvangrijke taak is.
+                    Bij -Naam- begrijpen we dat een renovatieproject een omvangrijke taak is.
                 </p>
 
                 <Link
@@ -33,7 +33,7 @@ const Banner = () => {
                     <p>
                         Daarom bieden wij een end-to-end renovatie-ervaring, waarbij we elke stap van het proces beheren, van ontwerp tot constructie en projectmanagement. Wij nemen alle zorgen uit handen, zodat u zich kunt concentreren op het eindresultaat.
                     </p>
-                    <p className="mt-2 font-bold">Bel +31 (06) 57-63-48-94</p>
+                    <p className="mt-2 font-bold">Bel +31 (06) 11-11-11-11</p>
                     <hr className="mt-2 w-64 border-green-700" />
                 </div>
             </div>
