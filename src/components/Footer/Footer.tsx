@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from "react";
-import { FaPhone, FaEnvelope, FaInstagram, FaBriefcase, FaUser } from "react-icons/fa";
+import { FaPhone, FaBriefcase, FaUser } from "react-icons/fa";
+// import  {FaEnvelope, FaInstagram} from "react-icons/fa";
 import { FaHouseChimneyWindow } from "react-icons/fa6";
 import emailjs from "@emailjs/browser";
 
