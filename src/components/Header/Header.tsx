@@ -29,7 +29,7 @@ const Header: React.FC = () => {
             <div className="flex justify-between items-center p-4 lg:px-16">
                 {/* Логотип */}
                 <div className="text-2xl font-serif font-bold text-gray-900">
-                    <span className="text-green-900">Aleksander Klusbedrijf</span>
+                    <span className="text-green-900">Aleksandr Klusbedrijf</span>
                     <p className="text-sm text-gray-600 tracking-widest">
                         Interieurrenovaties
                     </p>

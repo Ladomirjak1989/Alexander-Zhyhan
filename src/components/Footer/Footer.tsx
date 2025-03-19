@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from "react";
-import { FaPhone, FaEnvelope, FaInstagram } from "react-icons/fa";
+import { FaPhone, FaEnvelope, FaInstagram, FaBriefcase, FaUser } from "react-icons/fa";
+import { FaHouseChimneyWindow } from "react-icons/fa6";
 import emailjs from "@emailjs/browser";
 
 const Footer: React.FC = () => {
@@ -165,16 +166,43 @@ const Footer: React.FC = () => {
                                 <FaPhone className="text-green-900" />
                                 <span>+31 (06) 57-63-48-94</span>
                             </li>
-                            <li className="flex items-center space-x-2">
+                            {/* <li className="flex items-center space-x-2">
                                 <FaEnvelope className="text-green-900" />
                                 <a href="mailto:info@alexanderzhuhan.nl" className="hover:underline">
                                     alex.zhyhan@hotmail.com
                                 </a>
                             </li>
+
                             <li className="flex items-center space-x-2">
+                                <FaEnvelope className="text-green-900" />
+                                <a href="mailto:info@alexanderzhuhan.nl" className="hover:underline">
+                                    alexanderzhyhan@gmail.com
+                                </a>
+                            </li> */}
+
+                            <ul className="space-y-2">
+                                <li className="flex items-center gap-2">
+                                    < FaUser className="text-green-900" />
+                                    {/* <span className="font-semibold">Werk:</span> */}
+                                    <span className="text-gray-700">alex.zhyhan@hotmail.com</span>
+                                </li>
+                                <li className="flex items-center gap-2">
+                                    < FaBriefcase className="text-green-900" />
+                                    {/* <span className="font-semibold">Persoonlijk:</span> */}
+                                    <span className="text-gray-700">alexanderzhyhan@gmail.com</span>
+                                </li>
+                            </ul>
+
+                            {/* <li className="flex items-center space-x-2">
                                 <FaInstagram className="text-green-900" />
                                 <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:underline">
                                     alexanderzhuhan.nl
+                                </a>
+                            </li> */}
+                            <li className="flex items-center space-x-2">
+                                <FaHouseChimneyWindow className="text-green-900" />
+                                <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" className="hover:underline">
+                                    Lange Hilleweg 69 C, 3073 BJ, Rotterdam
                                 </a>
                             </li>
                         </ul>
@@ -186,21 +214,23 @@ const Footer: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-gray-600 text-sm mt-12 px-6 lg:px-16">
                 <div className="text-center md:text-left">
                     <p>
-                        &copy; COPYRIGHT 2025 | KVK 96675993 Website by{" "}
+                        &copy; COPYRIGHT 2016-2025 | KVK 96675993 Website by{" "}
                         <a href="https://" className="text-green-900 hover:underline">
                             BL ICT Bedrijf
                         </a>
                     </p>
                 </div>
-                <div className="text-center md:text-right">
-                    <p className="font-semibold text-green-950 italic text-3xl md:text-5xl">
-                        Aleksander Klusbedrijf
+
+                <div className="text-center md:text-right flex flex-col justify-start">
+                    <p className="font-semibold text-green-950 italic text-3xl md:text-5xl leading-tight">
+                        Aleksandr Klusbedrijf
                     </p>
-                    <p className="font-semibold text-gray-700 italic text-xl md:text-3xl">
+                    <p className="font-semibold text-gray-700 italic text-xl md:text-3xl mt-[-4px]">
                         Interieurrenovaties
                     </p>
                 </div>
             </div>
+
         </footer>
     );
 };
